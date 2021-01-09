@@ -1,0 +1,24 @@
+sudo: required
+services: 
+  - docker
+
+before_install:
+  - docker build -t parimalkesan/multi-docker -f ./client/Dockerfile.dev .
+
+script:
+  - docker run parimalkesan/multi-docker npm run test
+
+after_success:
+  - docker build -t parimalkesan/multi-client ./client
+  - docker build -t parimalkesan/multi-nginx ./nginx
+  - docker build -t parimalkesan/multi-server ./server
+  - docker build -t parimalkesan/multi-worker ./worker
+
+#log in to docker hub
+echo "$DOCKER_PASSWORD" | docker login -u  "$DOCKER_ID" --password-stdin
+
+#Take these build images and push to docker hub
+- docker push parimalkesan/multi-client
+- docker push parimalkesan/multi-nginx
+- docker push parimalkesan/multi-server
+- docker push parimalkesan/multi-worker
