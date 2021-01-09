@@ -4,7 +4,7 @@ services:
   - docker
 
 before_install:
-  - docker build -t parimalkesan/multi-docker -f ./client/Dockerfile.dev .
+  - docker build -t parimalkesan/multi-docker -f ./client/Dockerfile.dev ./client
 
 script:
   - docker run -e CI=true parimalkesan/multi-docker npm test
