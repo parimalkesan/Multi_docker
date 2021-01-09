@@ -1,6 +1,7 @@
 sudo: required
 language: generic
-services: 
+
+services:
   - docker
 
 before_install:
@@ -14,12 +15,10 @@ after_success:
   - docker build -t parimalkesan/multi-nginx ./nginx
   - docker build -t parimalkesan/multi-server ./server
   - docker build -t parimalkesan/multi-worker ./worker
-
-#log in to docker hub
-echo "$DOCKER_PASSWORD" | docker login -u  "$DOCKER_ID" --password-stdin
-
-#Take these build images and push to docker hub
-- docker push parimalkesan/multi-client
-- docker push parimalkesan/multi-nginx
-- docker push parimalkesan/multi-server
-- docker push parimalkesan/multi-worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push parimalkesan/multi-client
+  - docker push parimalkesan/multi-nginx
+  - docker push parimalkesan/multi-server
+  - docker push parimalkesan/multi-worker
